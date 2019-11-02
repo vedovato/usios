@@ -4,14 +4,14 @@ export default () => {
   Navigation.setRoot({
     root: {
       sideMenu: {
-        // left: {
-        //   component: {
-        //     name: 'biobox.home',
-        //     passProps: {
-        //       text: 'This is a left side menu screen'
-        //     }
-        //   }
-        // },
+        left: {
+          component: {
+            name: 'biobox.home',
+            passProps: {
+              text: 'This is a left side menu screen'
+            }
+          }
+        },
 
         center: {
           stack: {
