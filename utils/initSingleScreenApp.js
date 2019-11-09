@@ -4,7 +4,7 @@ export default () => {
   Navigation.setRoot({
     root: {
       component: {
-        name: "biobox.login"
+        name: "biobox.form"
       }
     }
   });

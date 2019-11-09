@@ -1,13 +1,16 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { Container, Content, Form, Text } from 'native-base'
 
-export default ({pokemon, teste}) => {
+export default ({ pokemon, teste }) => {
   // console.warn('>>>', props)
 
   teste()
   return (
-    <View>
-      <Text style={{fontSize: 40}}>Tela #3 = {pokemon}</Text>
-    </View>
+    <Container>
+      <Content>
+
+        <Text style={{ fontSize: 40 }}>Tela #3 = {pokemon}</Text>
+      </Content>
+    </Container>
   )
 }

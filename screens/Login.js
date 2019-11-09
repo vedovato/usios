@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Image, StyleSheet } from 'react-native';
 // import {pushScreen} from '../utils/navigation';
 import initMenuApp from '../utils/initMenuApp';
 import {
@@ -15,10 +15,14 @@ import {
 const LOGO = require('../images/logo.png');
 
 const LoginScreen = props => {
-  const [inputLogin, setInputLogin] = useState('andrei');
-  const [inputSenha, setInputSenha] = useState(null);
+  const [fields, setFields] = useState({})
+
+  const _setFields = (field, value) => {
+    setFields({ ...fields, [field]: value })
+  }
 
   const _handleFormSubmit = () => {
+    // console.warn('INPUTS', inputLogin, inputSenha);
     initMenuApp();
   };
 
@@ -27,19 +31,23 @@ const LoginScreen = props => {
       <View style={styles.wrapper}>
         <Image source={LOGO} style={styles.logo} />
 
-        <Form style={{width: '80%'}}>
-          <Item floatingLabel>
+        <Text>
+          {JSON.stringify(fields)}
+        </Text>
+
+        <Form style={{ width: '80%' }}>
+          <Item>
             <Label>Login</Label>
-            <Input value={inputLogin} onChangeText={setInputLogin} />
+            <Input value={fields.login} onChangeText={res => _setFields('login', res)} />
           </Item>
 
-          <Item floatingLabel last>
+          <Item>
             <Label>Senha</Label>
             <Input
               password
-              value={inputSenha}
+              value={fields.senha}
               secureTextEntry={true}
-              onChangeText={setInputSenha}
+              onChangeText={res => _setFields('senha', res)}
             />
           </Item>
 
@@ -47,7 +55,7 @@ const LoginScreen = props => {
             primary
             full
             rounded
-            style={{marginTop: 60}}
+            style={{ marginTop: 60 }}
             onPress={_handleFormSubmit}>
             <Text style={styles.btnLoginText}>Prosseguir</Text>
           </Button>
