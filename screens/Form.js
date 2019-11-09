@@ -58,8 +58,8 @@ const FormScreen = () => {
     });
 
     const JEIZAO_MAROTO = JSON.stringify(retorno, null, 2);
-    retorno.status === 1 && _showToast('success', JEIZAO_MAROTO);
-    retorno.status === '-1' && _showToast('danger', JEIZAO_MAROTO);
+    retorno.status == '1' && _showToast('success', JEIZAO_MAROTO);
+    retorno.status == '-1' && _showToast('danger', JEIZAO_MAROTO);
     !retorno && _showToast('danger', 'Erro no servidor');
   };
 
