@@ -1,11 +1,13 @@
 import {Navigation} from 'react-native-navigation';
-import initSingleScreenApp from './utils/initSingleScreenApp';
+// import initSingleScreenApp from './utils/initSingleScreenApp';
+import initMenuApp from './utils/initMenuApp'
 import registerScreens from './screens';
 
 registerScreens();
 
 Navigation.events().registerAppLaunchedListener(() => {
-  initSingleScreenApp();
+  // initSingleScreenApp();
+  initMenuApp()
 
   Navigation.setDefaultOptions({
     layout: {
