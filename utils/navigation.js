@@ -1,19 +1,11 @@
-import {Navigation} from 'react-native-navigation'
+import {Navigation} from 'react-native-navigation';
 
-export const pushScreen = ({ id, name, passProps = {}, options = {} }) => {
-    Navigation.push(id, {
-      component: {
-        name,
-        passProps,
-        options
-
-        // options: {
-        //   topBar: {
-        //     title: {
-        //       text: 'Pushed screen title'
-        //     }
-        //   }
-        // }
-      }
-    })
-}
+export const pushScreen = ({id, name, passProps = {}, options = {}}) => {
+  Navigation.push(id, {
+    component: {
+      name,
+      passProps,
+      options,
+    },
+  });
+};
