@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View} from 'react-native';
-import API from '../utils/api'
+import {Navigation} from 'react-native-navigation';
+import API from '../utils/api';
 import {
   Root,
   Container,
@@ -14,18 +15,21 @@ import {
   DatePicker,
   Textarea,
   Toast,
+  Row,
+  Col,
 } from 'native-base';
 
 const Separator = () => <View style={{width: '100%', height: 20}} />;
 
-const FormScreen = () => {
+const FormScreen = props => {
   const DATA = new Date();
   const [data, setData] = useState(null);
   const [fields, setFields] = useState({
-    fkcategoria_usuario: '1',
-    nome: 'Andrei Vedovato',
-    data: DATA.getDate(),
-    mensagem: 'Teste',
+    fkcategoria_usuario: props.fkcategoria_usuario,
+    nome: props.nome,
+    data: props.data,
+    dataBR: props.data_br,
+    mensagem: props.mensagem,
   });
 
   useEffect(() => {
@@ -50,17 +54,36 @@ const FormScreen = () => {
       },
     });
 
-  const handleFormSubmit = async () => {
+  const _handleFormSubmit = async () => {
     const retorno = await API({
-      dados: JSON.stringify(fields),
       acao: 'api_teste',
-      operacao: 'I',
+      dados: JSON.stringify(fields),
+      id: props.edit ? props.id : null,
+      operacao: props.edit ? 'U' : 'I',
     });
 
     const JEIZAO_MAROTO = JSON.stringify(retorno, null, 2);
     retorno.status == '1' && _showToast('success', JEIZAO_MAROTO);
     retorno.status == '-1' && _showToast('danger', JEIZAO_MAROTO);
     !retorno && _showToast('danger', 'Erro no servidor');
+  };
+
+  const _handleRemoval = async () => {
+    const retorno = await API({
+      acao: 'api_teste',
+      id: props.id,
+      operacao: 'D',
+    });
+
+    retorno.status == '-1' && _showToast('danger', 'Erro ao Apagar');
+    !retorno && _showToast('danger', 'Erro no servidor');
+
+    if (retorno.status == '1') {
+      _showToast('success', 'Registro Apagado!');
+      setTimeout(() => {
+        Navigation.pop(props.componentId);
+      }, 2000);
+    }
   };
 
   return (
@@ -92,7 +115,7 @@ const FormScreen = () => {
               <Input
                 value={fields.nome}
                 onChangeText={val => _setFields('nome', val)}
-                placeholder="Regular Textbox"
+                placeholder="Seu nome"
               />
             </Item>
 
@@ -103,15 +126,16 @@ const FormScreen = () => {
                 defaultDate={new Date()}
                 minimumDate={new Date(2018, 1, 1)}
                 maximumDate={new Date(2018, 12, 31)}
+                value={fields.dataBR}
                 // timeZoneOffsetInMinutes={true}
                 locale={'pt_BR'}
                 modalTransparent={false}
                 animationType={'fade'}
-                placeHolderText="Selecione a data"
+                placeHolderText={fields.dataBR || 'Selecione a data'}
                 textStyle={{color: 'green'}}
                 placeHolderTextStyle={{color: '#dedede'}}
                 onDateChange={val => _setFields('data', val)}
-                disabled={false}
+                // disabled={false}
               />
             </View>
 
@@ -153,14 +177,26 @@ const FormScreen = () => {
             <Separator />
             <Separator />
 
-            <Button
-              primary
-              block
-              rounded
-              disabled={Object.entries(fields).length ? false : true}
-              onPress={handleFormSubmit}>
-              <Text>Enviar</Text>
-            </Button>
+            <Row>
+              <Col>
+                <Button
+                  primary
+                  block
+                  rounded
+                  disabled={Object.entries(fields).length ? false : true}
+                  onPress={_handleFormSubmit}>
+                  <Text>{props.edit ? 'Atualizar' : 'Inserir'}</Text>
+                </Button>
+              </Col>
+
+              {props.id && (
+                <Col style={{marginLeft: 40}}>
+                  <Button danger block rounded onPress={_handleRemoval}>
+                    <Text>Remover</Text>
+                  </Button>
+                </Col>
+              )}
+            </Row>
           </Form>
         </Content>
       </Container>
